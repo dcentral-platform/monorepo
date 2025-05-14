@@ -1,0 +1,109 @@
+name: Nightly Backup
+
+on:
+  schedule:
+    # Runs at 2 AM UTC every day
+    - cron: '0 2 * * *'
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  backup-repo:
+    name: Backup Repository
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Get all history
+      
+      - name: Setup Git LFS
+        run: |
+          git lfs install
+          git lfs pull
+      
+      - name: Create repository backup archive
+        run: |
+          TIMESTAMP=$(date +'%Y%m%d_%H%M%S')
+          git bundle create "repo_backup_${TIMESTAMP}.bundle" --all
+      
+      - name: Upload repository backup
+        uses: actions/upload-artifact@v3
+        with:
+          name: repository-backup
+          path: "*.bundle"
+          retention-days: 30
+
+  generate-sbom:
+    name: Generate SBOM Report
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Generate SBOM for Go code
+        uses: anchore/sbom-action@v0
+        with:
+          format: cyclonedx-json
+          output-file: go-sbom.json
+          path: ./code/edge-gateway
+      
+      - name: Generate SBOM for Node.js code
+        uses: anchore/sbom-action@v0
+        with:
+          format: cyclonedx-json
+          output-file: node-sbom.json
+          path: ./code
+      
+      - name: Upload SBOM reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: sbom-reports
+          path: |
+            *-sbom.json
+          retention-days: 90
+
+  backup-database:
+    name: Backup Database
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      # This is a placeholder for actual DB backup
+      # In a real project, you would use appropriate authentication and connection strings
+      - name: Placeholder for database backup
+        run: |
+          TIMESTAMP=$(date +'%Y%m%d_%H%M%S')
+          mkdir -p db_backups
+          
+          echo "This is a placeholder for the database backup script." > db_backups/README.md
+          echo "Backup timestamp: ${TIMESTAMP}" >> db_backups/README.md
+          echo "In a real project, this would:" >> db_backups/README.md
+          echo "1. Connect to production or staging database" >> db_backups/README.md
+          echo "2. Execute pg_dump, mongodump, or equivalent backup utility" >> db_backups/README.md
+          echo "3. Encrypt the backup file" >> db_backups/README.md
+          echo "4. Upload to secure storage" >> db_backups/README.md
+          
+          # Create a dummy SQL dump file as a placeholder
+          echo "-- Database backup for ${TIMESTAMP}\n-- This is just a placeholder file\n\nSELECT 'backup placeholder';" > db_backups/backup_${TIMESTAMP}.sql
+      
+      - name: Upload database backup
+        uses: actions/upload-artifact@v3
+        with:
+          name: database-backup
+          path: db_backups/
+          retention-days: 14
+      
+      # In a real scenario, you would also push this backup to external storage:
+      # - name: Upload backup to S3
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: us-west-2
+      #
+      # - name: Copy backups to S3
+      #   run: aws s3 cp db_backups/ s3://my-backup-bucket/backups/ --recursive

@@ -1,0 +1,96 @@
+{
+  "name": "DCentral BrandDAO",
+  "network": "1",
+  "symbol": "DBRAND",
+  "skin": "dcentral",
+  "domain": "vote.dcentral.io",
+  "strategies": [
+    {
+      "name": "erc20-balance-of",
+      "params": {
+        "address": "0x1234567890123456789012345678901234567890",
+        "symbol": "DBRAND",
+        "decimals": 18
+      }
+    },
+    {
+      "name": "erc721-with-multiplier",
+      "params": {
+        "address": "0x0987654321098765432109876543210987654321",
+        "symbol": "DCENTRAL-NFT",
+        "multiplier": 10
+      }
+    }
+  ],
+  "members": [
+    "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+    "0x1234567890123456789012345678901234567890",
+    "0x2345678901234567890123456789012345678901",
+    "0x3456789012345678901234567890123456789012",
+    "0x4567890123456789012345678901234567890123"
+  ],
+  "admins": [
+    "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+    "0x1234567890123456789012345678901234567890"
+  ],
+  "filters": {
+    "defaultTab": "core",
+    "minScore": 100,
+    "onlyMembers": false,
+    "invalids": []
+  },
+  "validation": {
+    "name": "basic",
+    "params": {
+      "minScore": 100
+    }
+  },
+  "voting": {
+    "delay": 86400,
+    "period": 259200,
+    "quorum": 10000,
+    "type": "weighted"
+  },
+  "proposal": {
+    "discussion": "https://forum.dcentral.io",
+    "template": "# Title\n\n## Summary\n\nInsert a summary of the proposal.\n\n## Description\n\nInsert a description of the proposal.\n\n## Goals\n\n- Goal 1\n- Goal 2\n- Goal 3\n\n## Implementation\n\nDescribe how this proposal will be implemented.\n\n## Timeline\n\n- Start date: YYYY-MM-DD\n- End date: YYYY-MM-DD\n\n## Budget\n\nList required resources and budget.\n\n## Team\n\nList the team members involved in this proposal.\n\n## Additional Information\n\nProvide any additional information or resources."
+  },
+  "categories": [
+    {
+      "name": "Core",
+      "description": "Protocol governance and core parameters"
+    },
+    {
+      "name": "Treasury",
+      "description": "Treasury allocations and management"
+    },
+    {
+      "name": "Branding",
+      "description": "Brand assets, guidelines, and identity"
+    },
+    {
+      "name": "Partnerships",
+      "description": "External partnerships and collaborations"
+    },
+    {
+      "name": "Products",
+      "description": "Product development and features"
+    },
+    {
+      "name": "Community",
+      "description": "Community initiatives and events"
+    }
+  ],
+  "plugins": {
+    "safeSnap": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "network": "1"
+    }
+  },
+  "terms": "By participating, you agree to the DCentral DAO Charter and Code of Conduct.",
+  "guidelines": "Please review the Governance Guidelines before submitting a proposal: https://docs.dcentral.io/governance",
+  "twitter": "dcentral_dao",
+  "github": "dcentral-dao",
+  "coingecko": "dcentral",
+  "discord": "discord.gg/dcentral"
+}

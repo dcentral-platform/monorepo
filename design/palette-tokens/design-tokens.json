@@ -1,0 +1,194 @@
+{
+  "$schema": "https://raw.githubusercontent.com/adobe/spectrum-tokens/main/schemas/tokens.schema.json",
+  "version": "1.0.0",
+  "name": "DCentral Design Tokens",
+  "description": "Design tokens for DCentral platform",
+  "color": {
+    "brand": {
+      "primary": {
+        "100": { "value": "#E6F2FF" },
+        "200": { "value": "#CCE4FF" },
+        "300": { "value": "#99C9FF" },
+        "400": { "value": "#66ADFF" },
+        "500": { "value": "#3392FF" },
+        "600": { "value": "#0076FF" },
+        "700": { "value": "#005ECC" },
+        "800": { "value": "#004799" },
+        "900": { "value": "#002F66" }
+      },
+      "secondary": {
+        "100": { "value": "#F3E6FF" },
+        "200": { "value": "#E6CCFF" },
+        "300": { "value": "#CC99FF" },
+        "400": { "value": "#B366FF" },
+        "500": { "value": "#9933FF" },
+        "600": { "value": "#8000FF" },
+        "700": { "value": "#6600CC" },
+        "800": { "value": "#4D0099" },
+        "900": { "value": "#330066" }
+      },
+      "accent": {
+        "100": { "value": "#FFEBCC" },
+        "200": { "value": "#FFD699" },
+        "300": { "value": "#FFC266" },
+        "400": { "value": "#FFAD33" },
+        "500": { "value": "#FF9900" },
+        "600": { "value": "#CC7A00" },
+        "700": { "value": "#995C00" },
+        "800": { "value": "#663D00" },
+        "900": { "value": "#331F00" }
+      }
+    },
+    "neutral": {
+      "gray": {
+        "100": { "value": "#F8F9FA" },
+        "200": { "value": "#E9ECEF" },
+        "300": { "value": "#DEE2E6" },
+        "400": { "value": "#CED4DA" },
+        "500": { "value": "#ADB5BD" },
+        "600": { "value": "#6C757D" },
+        "700": { "value": "#495057" },
+        "800": { "value": "#343A40" },
+        "900": { "value": "#212529" }
+      }
+    },
+    "utility": {
+      "success": { "value": "#28A745" },
+      "info": { "value": "#17A2B8" },
+      "warning": { "value": "#FFC107" },
+      "danger": { "value": "#DC3545" }
+    },
+    "text": {
+      "primary": { "value": "{color.neutral.gray.900}" },
+      "secondary": { "value": "{color.neutral.gray.700}" },
+      "disabled": { "value": "{color.neutral.gray.500}" },
+      "inverse": { "value": "{color.neutral.gray.100}" }
+    },
+    "background": {
+      "default": { "value": "#FFFFFF" },
+      "alt": { "value": "{color.neutral.gray.100}" },
+      "elevated": { "value": "#FFFFFF" }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "base": { "value": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" },
+      "heading": { "value": "'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" },
+      "mono": { "value": "'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace" }
+    },
+    "fontWeight": {
+      "light": { "value": "300" },
+      "regular": { "value": "400" },
+      "medium": { "value": "500" },
+      "semibold": { "value": "600" },
+      "bold": { "value": "700" }
+    },
+    "fontSize": {
+      "xs": { "value": "0.75rem" },
+      "sm": { "value": "0.875rem" },
+      "base": { "value": "1rem" },
+      "lg": { "value": "1.125rem" },
+      "xl": { "value": "1.25rem" },
+      "2xl": { "value": "1.5rem" },
+      "3xl": { "value": "1.875rem" },
+      "4xl": { "value": "2.25rem" },
+      "5xl": { "value": "3rem" },
+      "6xl": { "value": "3.75rem" }
+    },
+    "lineHeight": {
+      "none": { "value": "1" },
+      "tight": { "value": "1.25" },
+      "snug": { "value": "1.375" },
+      "normal": { "value": "1.5" },
+      "relaxed": { "value": "1.625" },
+      "loose": { "value": "2" }
+    },
+    "letterSpacing": {
+      "tighter": { "value": "-0.05em" },
+      "tight": { "value": "-0.025em" },
+      "normal": { "value": "0" },
+      "wide": { "value": "0.025em" },
+      "wider": { "value": "0.05em" },
+      "widest": { "value": "0.1em" }
+    }
+  },
+  "spacing": {
+    "0": { "value": "0" },
+    "1": { "value": "0.25rem" },
+    "2": { "value": "0.5rem" },
+    "3": { "value": "0.75rem" },
+    "4": { "value": "1rem" },
+    "5": { "value": "1.25rem" },
+    "6": { "value": "1.5rem" },
+    "8": { "value": "2rem" },
+    "10": { "value": "2.5rem" },
+    "12": { "value": "3rem" },
+    "16": { "value": "4rem" },
+    "20": { "value": "5rem" },
+    "24": { "value": "6rem" },
+    "32": { "value": "8rem" },
+    "40": { "value": "10rem" },
+    "48": { "value": "12rem" },
+    "56": { "value": "14rem" },
+    "64": { "value": "16rem" }
+  },
+  "size": {
+    "breakpoints": {
+      "xs": { "value": "320px" },
+      "sm": { "value": "640px" },
+      "md": { "value": "768px" },
+      "lg": { "value": "1024px" },
+      "xl": { "value": "1280px" },
+      "2xl": { "value": "1536px" }
+    }
+  },
+  "border": {
+    "radius": {
+      "none": { "value": "0" },
+      "sm": { "value": "0.125rem" },
+      "md": { "value": "0.25rem" },
+      "lg": { "value": "0.5rem" },
+      "xl": { "value": "0.75rem" },
+      "2xl": { "value": "1rem" },
+      "3xl": { "value": "1.5rem" },
+      "full": { "value": "9999px" }
+    },
+    "width": {
+      "none": { "value": "0" },
+      "thin": { "value": "1px" },
+      "medium": { "value": "2px" },
+      "thick": { "value": "4px" }
+    }
+  },
+  "shadow": {
+    "sm": { "value": "0 1px 2px 0 rgba(0, 0, 0, 0.05)" },
+    "md": { "value": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" },
+    "lg": { "value": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)" },
+    "xl": { "value": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" },
+    "2xl": { "value": "0 25px 50px -12px rgba(0, 0, 0, 0.25)" },
+    "inner": { "value": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)" },
+    "none": { "value": "none" }
+  },
+  "motion": {
+    "duration": {
+      "fast": { "value": "150ms" },
+      "normal": { "value": "300ms" },
+      "slow": { "value": "500ms" }
+    },
+    "easing": {
+      "linear": { "value": "linear" },
+      "easeIn": { "value": "cubic-bezier(0.4, 0, 1, 1)" },
+      "easeOut": { "value": "cubic-bezier(0, 0, 0.2, 1)" },
+      "easeInOut": { "value": "cubic-bezier(0.4, 0, 0.2, 1)" }
+    }
+  },
+  "zIndex": {
+    "dropdown": { "value": "1000" },
+    "sticky": { "value": "1020" },
+    "fixed": { "value": "1030" },
+    "modalBackdrop": { "value": "1040" },
+    "modal": { "value": "1050" },
+    "popover": { "value": "1060" },
+    "tooltip": { "value": "1070" }
+  }
+}

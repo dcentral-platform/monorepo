@@ -5,3 +5,549 @@
   - setup
   title: Init repo
   week: 1
+- body: Draft 2-page mutual NDA, Ontario law, 2-year term, carve-out for open source contributions
+  due: '2025-05-20'
+  id: W1-02
+  labels:
+  - legal
+  title: Generate NDA v1
+  week: 1
+- body: 1% of net platform fees until 3× cap, non-transferable, Ontario law
+  due: '2025-05-21'
+  id: W1-03
+  labels:
+  - legal
+  title: Generate Revenue-Share Warrant
+  week: 1
+- body: Remote origin set
+  due: '2025-05-21'
+  id: W1-04
+  labels:
+  - setup
+  title: Push repo to GitHub
+  week: 1
+- body: Add dual license header for code + docs
+  due: '2025-05-22'
+  id: W1-05
+  labels:
+  - legal
+  title: Add LICENSE.txt (GPLv3 + CC-BY)
+  week: 1
+- body: Book appointment on goodlawyer.ca with NDA & Warrant documents
+  due: '2025-05-22'
+  id: W1-06
+  labels:
+  - legal
+  title: Open Goodlawyer flat-fee ticket
+  week: 1
+- body: Create GDPR & PIPEDA compliant privacy notice for edge-first CCTV platform
+  due: '2025-05-23'
+  id: W1-07
+  labels:
+  - legal
+  title: Draft Privacy Notice v0.9
+  week: 1
+- body: Add workflow with Trivy SBOM + Go tests
+  due: '2025-05-23'
+  id: W1-08
+  labels:
+  - devops
+  title: Create GitHub Actions SBOM workflow
+  week: 1
+- body: Create folder structure using canvas inventory as guide
+  due: '2025-05-24'
+  id: W1-09
+  labels:
+  - setup
+  title: Plan folder map
+  week: 1
+- body: Create logo renders and save
+  due: '2025-05-27'
+  id: W2-01
+  labels:
+  - design
+  title: MidJourney "mesh-node" prompt
+  week: 2
+- body: Create SVG versions of logo
+  due: '2025-05-27'
+  id: W2-02
+  labels:
+  - design
+  title: Figma import & refine → SVGs
+  week: 2
+- body: Create JSON tokens with WCAG ratio
+  due: '2025-05-28'
+  id: W2-03
+  labels:
+  - design
+  title: Generate design-tokens.json
+  week: 2
+- body: Initialize shadcn and configure palette
+  due: '2025-05-28'
+  id: W2-04
+  labels:
+  - frontend
+  title: Create Tailwind config from tokens
+  week: 2
+- body: Initialize Storybook and create Button component
+  due: '2025-05-29'
+  id: W2-05
+  labels:
+  - frontend
+  title: Init Storybook
+  week: 2
+- body: Verify contrast ratios ≥ 4.5
+  due: '2025-05-29'
+  id: W2-06
+  labels:
+  - design
+  title: Install Stark plug-in & run WCAG check
+  week: 2
+- body: Create brand guide using Figma export
+  due: '2025-05-30'
+  id: W2-07
+  labels:
+  - design
+  title: Draft Brand Guide PDF
+  week: 2
+- body: Finalize and commit design assets
+  due: '2025-05-31'
+  id: W2-08
+  labels:
+  - design
+  title: Commit /design/ folder
+  week: 2
+- body: Initialize Go module
+  due: '2025-06-03'
+  id: W3-01
+  labels:
+  - backend
+  title: Create edge-gateway folder with main.go skeleton
+  week: 3
+- body: Create container configuration
+  due: '2025-06-03'
+  id: W3-02
+  labels:
+  - devops
+  title: Add Dockerfile (Debian slim + Go build)
+  week: 3
+- body: Create mqtt_client.go using Copilot
+  due: '2025-06-04'
+  id: W3-03
+  labels:
+  - backend
+  title: Scaffold MQTT client
+  week: 3
+- body: Ensure tests pass with go test ./...
+  due: '2025-06-04'
+  id: W3-04
+  labels:
+  - testing
+  title: Write unit tests
+  week: 3
+- body: Create Kubernetes deployment chart
+  due: '2025-06-05'
+  id: W3-05
+  labels:
+  - devops
+  title: Add Helm chart for k3s
+  week: 3
+- body: Establish performance baseline
+  due: '2025-06-06'
+  id: W3-06
+  labels:
+  - testing
+  title: Run k6 perf script
+  week: 3
+- body: Verify GitHub Container Registry build
+  due: '2025-06-06'
+  id: W3-07
+  labels:
+  - devops
+  title: Commit & push → CI builds image on GHCR
+  week: 3
+- body: Create script for supply chain security
+  due: '2025-06-07'
+  id: W3-08
+  labels:
+  - devops
+  title: Generate SBOM diff checker script
+  week: 3
+- body: Define API specification
+  due: '2025-06-10'
+  id: W4-01
+  labels:
+  - api
+  title: Use Swagger Editor to draft openapi.yaml
+  week: 4
+- body: Generate API routes from specification
+  due: '2025-06-11'
+  id: W4-02
+  labels:
+  - backend
+  title: Add Node server.js with swagger-cli routes
+  week: 4
+- body: Set up documentation site structure
+  due: '2025-06-12'
+  id: W4-03
+  labels:
+  - documentation
+  title: Install MkDocs Material
+  week: 4
+- body: Configure automatic docs site deployment
+  due: '2025-06-13'
+  id: W4-04
+  labels:
+  - devops
+  title: Create GitHub Action for docs deployment
+  week: 4
+- body: Create integration documentation
+  due: '2025-06-14'
+  id: W4-05
+  labels:
+  - documentation
+  title: Draft partner_integration_guide.md
+  week: 4
+- body: Test documentation rendering
+  due: '2025-06-14'
+  id: W4-06
+  labels:
+  - documentation
+  title: Verify Mermaid diagrams and code tabs
+  week: 4
+- body: Create architectural overview document
+  due: '2025-06-17'
+  id: W5-01
+  labels:
+  - documentation
+  title: Draft architecture_overview.md
+  week: 5
+- body: Create system diagrams using Mermaid
+  due: '2025-06-18'
+  id: W5-02
+  labels:
+  - documentation
+  title: Generate architecture diagrams
+  week: 5
+- body: Develop compliance documentation
+  due: '2025-06-19'
+  id: W5-03
+  labels:
+  - compliance
+  title: Draft compliance_overview.md
+  week: 5
+- body: Create Terraform configuration for AWS deployment
+  due: '2025-06-20'
+  id: W5-04
+  labels:
+  - devops
+  title: Set up Terraform configs
+  week: 5
+- body: Write comprehensive project README
+  due: '2025-06-21'
+  id: W5-05
+  labels:
+  - documentation
+  title: Create detailed README.md
+  week: 5
+- body: Establish contribution guidelines
+  due: '2025-06-21'
+  id: W5-06
+  labels:
+  - documentation
+  title: Draft CONTRIBUTING.md
+  week: 5
+- body: Design landing page layout in Figma
+  due: '2025-06-24'
+  id: W6-01
+  labels:
+  - marketing
+  title: Create landing page design
+  week: 6
+- body: Develop smart contract templates
+  due: '2025-06-25'
+  id: W6-02
+  labels:
+  - blockchain
+  title: Draft Solidity contracts
+  week: 6
+- body: Create email marketing templates
+  due: '2025-06-26'
+  id: W6-03
+  labels:
+  - marketing
+  title: Design email nurture sequence
+  week: 6
+- body: Develop security policy documentation
+  due: '2025-06-27'
+  id: W6-04
+  labels:
+  - compliance
+  title: Create security_policy.md
+  week: 6
+- body: Implement GDPR compliance features
+  due: '2025-06-28'
+  id: W6-05
+  labels:
+  - compliance
+  title: Develop GDPR compliance modules
+  week: 6
+- body: Setup financial forecasting models
+  due: '2025-06-28'
+  id: W6-06
+  labels:
+  - finance
+  title: Create financial forecast spreadsheets
+  week: 6
+- body: Create initial mockups for guard-wallet mobile app
+  due: '2025-07-01'
+  id: W7-01
+  labels:
+  - mobile
+  title: Design guard-wallet UI mockups
+  week: 7
+- body: Setup React Native project for mobile app
+  due: '2025-07-02'
+  id: W7-02
+  labels:
+  - mobile
+  title: Initialize React Native project
+  week: 7
+- body: Develop tokenomics model documentation
+  due: '2025-07-03'
+  id: W7-03
+  labels:
+  - governance
+  title: Draft tokenomics model
+  week: 7
+- body: Create point-of-presence marketing materials
+  due: '2025-07-04'
+  id: W7-04
+  labels:
+  - marketing
+  title: Design brochures and shelf-talkers
+  week: 7
+- body: Develop AR models for product visualization
+  due: '2025-07-05'
+  id: W7-05
+  labels:
+  - marketing
+  title: Create AR product models
+  week: 7
+- body: Setup community governance framework
+  due: '2025-07-05'
+  id: W7-06
+  labels:
+  - governance
+  title: Create DAO configuration
+  week: 7
+- body: Setup supply chain tracking system
+  due: '2025-07-08'
+  id: W8-01
+  labels:
+  - supply-chain
+  title: Develop supply chain tracking module
+  week: 8
+- body: Create audit preparation documentation
+  due: '2025-07-09'
+  id: W8-02
+  labels:
+  - compliance
+  title: Prepare for security audit
+  week: 8
+- body: Develop vote delegation mechanism
+  due: '2025-07-10'
+  id: W8-03
+  labels:
+  - governance
+  title: Implement voting delegation
+  week: 8
+- body: Create grant application templates
+  due: '2025-07-11'
+  id: W8-04
+  labels:
+  - finance
+  title: Draft grant application docs
+  week: 8
+- body: Setup customer support documentation
+  due: '2025-07-12'
+  id: W8-05
+  labels:
+  - support
+  title: Create support knowledge base
+  week: 8
+- body: Develop community guidelines
+  due: '2025-07-12'
+  id: W8-06
+  labels:
+  - community
+  title: Draft community_guidelines.md
+  week: 8
+- body: Setup analytics scripts for platform tracking
+  due: '2025-07-15'
+  id: W9-01
+  labels:
+  - analytics
+  title: Implement analytics scripts
+  week: 9
+- body: Create data room for private investor documentation
+  due: '2025-07-16'
+  id: W9-02
+  labels:
+  - data-room
+  title: Setup private investor data room
+  week: 9
+- body: Develop voting playbooks for governance
+  due: '2025-07-17'
+  id: W9-03
+  labels:
+  - governance
+  title: Create voting playbooks
+  week: 9
+- body: Implement token model simulations
+  due: '2025-07-18'
+  id: W9-04
+  labels:
+  - finance
+  title: Develop token economic models
+  week: 9
+- body: Create comprehensive contract tests
+  due: '2025-07-19'
+  id: W9-05
+  labels:
+  - testing
+  title: Develop smart contract tests
+  week: 9
+- body: Setup community forum infrastructure
+  due: '2025-07-19'
+  id: W9-06
+  labels:
+  - community
+  title: Deploy community forum
+  week: 9
+- body: Implement edge-gateway security features
+  due: '2025-07-22'
+  id: W10-01
+  labels:
+  - security
+  title: Enhance edge security
+  week: 10
+- body: Create comprehensive integration tests
+  due: '2025-07-23'
+  id: W10-02
+  labels:
+  - testing
+  title: Develop integration test suite
+  week: 10
+- body: Setup continuous deployment pipeline
+  due: '2025-07-24'
+  id: W10-03
+  labels:
+  - devops
+  title: Configure CD pipeline
+  week: 10
+- body: Create user onboarding documentation
+  due: '2025-07-25'
+  id: W10-04
+  labels:
+  - documentation
+  title: Draft user onboarding guide
+  week: 10
+- body: Develop marketing campaign analytics
+  due: '2025-07-26'
+  id: W10-05
+  labels:
+  - marketing
+  title: Setup marketing analytics
+  week: 10
+- body: Implement wallet connection features in mobile app
+  due: '2025-07-26'
+  id: W10-06
+  labels:
+  - mobile
+  title: Develop wallet connectivity
+  week: 10
+- body: Create incident response procedures
+  due: '2025-07-29'
+  id: W11-01
+  labels:
+  - compliance
+  title: Draft incident response plan
+  week: 11
+- body: Setup automated vulnerability scanning
+  due: '2025-07-30'
+  id: W11-02
+  labels:
+  - security
+  title: Configure vulnerability scanning
+  week: 11
+- body: Develop DAO voting interface
+  due: '2025-07-31'
+  id: W11-03
+  labels:
+  - governance
+  title: Create DAO voting UI
+  week: 11
+- body: Implement supply chain verification
+  due: '2025-08-01'
+  id: W11-04
+  labels:
+  - supply-chain
+  title: Develop supply chain verification
+  week: 11
+- body: Create partner onboarding documentation
+  due: '2025-08-02'
+  id: W11-05
+  labels:
+  - documentation
+  title: Draft partner onboarding guide
+  week: 11
+- body: Develop API rate limiting mechanism
+  due: '2025-08-02'
+  id: W11-06
+  labels:
+  - api
+  title: Implement API rate limiting
+  week: 11
+- body: Create comprehensive deployment guide
+  due: '2025-08-05'
+  id: W12-01
+  labels:
+  - documentation
+  title: Draft deployment documentation
+  week: 12
+- body: Implement bug bounty program
+  due: '2025-08-06'
+  id: W12-02
+  labels:
+  - security
+  title: Setup bug bounty program
+  week: 12
+- body: Develop token staking mechanism
+  due: '2025-08-07'
+  id: W12-03
+  labels:
+  - governance
+  title: Implement token staking
+  week: 12
+- body: Create final audit preparation checklist
+  due: '2025-08-08'
+  id: W12-04
+  labels:
+  - compliance
+  title: Prepare audit checklist
+  week: 12
+- body: Develop comprehensive API documentation
+  due: '2025-08-09'
+  id: W12-05
+  labels:
+  - documentation
+  title: Finalize API documentation
+  week: 12
+- body: Create launch readiness checklist
+  due: '2025-08-09'
+  id: W12-06
+  labels:
+  - project
+  title: Prepare launch checklist
+  week: 12

@@ -1,0 +1,174 @@
+name: Security Scans
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sundays at midnight
+  workflow_dispatch:
+
+jobs:
+  trivy-scan:
+    name: Trivy Container Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Build container image
+        run: |
+          if [ -f ./code/edge-gateway/Dockerfile ]; then
+            docker build -t edge-gateway:${{ github.sha }} ./code/edge-gateway
+          else
+            echo "No Dockerfile found in edge-gateway directory, creating a minimal one for scanning"
+            mkdir -p ./code/edge-gateway/dockerfiles
+            echo 'FROM golang:1.21-alpine AS builder' > ./code/edge-gateway/Dockerfile
+            echo 'WORKDIR /app' >> ./code/edge-gateway/Dockerfile
+            echo 'COPY . .' >> ./code/edge-gateway/Dockerfile
+            echo 'RUN go build -o app .' >> ./code/edge-gateway/Dockerfile
+            echo 'FROM alpine:latest' >> ./code/edge-gateway/Dockerfile
+            echo 'COPY --from=builder /app/app /app' >> ./code/edge-gateway/Dockerfile
+            echo 'CMD ["/app"]' >> ./code/edge-gateway/Dockerfile
+            docker build -t edge-gateway:${{ github.sha }} ./code/edge-gateway
+          fi
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: edge-gateway:${{ github.sha }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+  
+  dependency-check:
+    name: Dependency Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+      
+      - name: Check Go dependencies
+        run: |
+          if [ -f ./code/edge-gateway/go.mod ]; then
+            cd ./code/edge-gateway
+            go list -json -m all > go-deps.json
+          else
+            echo "No go.mod found in edge-gateway directory"
+            touch go-deps-not-found.txt
+          fi
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install npm-audit-resolver
+        run: npm install -g npm-audit-resolver
+      
+      - name: Check npm dependencies
+        run: |
+          if [ -f ./code/package.json ]; then
+            cd ./code
+            npm audit --json > npm-audit.json || true
+          else
+            echo "No package.json found in code directory"
+            touch npm-audit-not-found.txt
+          fi
+          
+          if [ -f ./code/contracts/package.json ]; then
+            cd ./code/contracts
+            npm audit --json > npm-audit-contracts.json || true
+          else
+            echo "No package.json found in contracts directory"
+            touch npm-audit-contracts-not-found.txt
+          fi
+      
+      - name: Run OWASP Dependency-Check
+        uses: dependency-check/Dependency-Check_Action@main
+        id: dependency-check
+        with:
+          project: 'dcentral'
+          path: '.'
+          format: 'HTML'
+          args: >
+            --scan ./code
+            --suppression ./code/suppression.xml
+            --failOnCVSS 7
+            --enableRetired
+      
+      - name: Upload dependency check report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: dependency-check-report
+          path: ${{ github.workspace }}/reports
+          
+  secret-scanning:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+        
+      - name: Run trufflehog scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified
+          
+  codeql-analysis:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'go', 'javascript' ]
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+      
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+      
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
