@@ -1,0 +1,17 @@
+apiVersion: v2
+name: edge-gateway
+description: A Helm chart for D Central Edge Gateway
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+maintainers:
+  - name: D Central Platform Team
+    email: info@dcentral-platform.io
+keywords:
+  - edge
+  - gateway
+  - iot
+  - mqtt
+home: https://github.com/dcentral-platform/monorepo
+sources:
+  - https://github.com/dcentral-platform/monorepo
