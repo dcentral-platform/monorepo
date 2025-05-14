@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="250" viewBox="0 0 250 250">
+  <defs>
+    <!-- Define gradients based on design tokens -->
+    <linearGradient id="primary-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0EA5E9" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+    <linearGradient id="secondary-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#4F46E5" />
+    </linearGradient>
+    <linearGradient id="accent-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+    
+    <!-- Filter for glow effect -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <!-- Background shape with subtle grid pattern -->
+  <g transform="translate(25, 25)">
+    <!-- Outer hexagon -->
+    <path d="M100 0L186.6 50V150L100 200L13.4 150V50L100 0Z" 
+          fill="none" 
+          stroke="url(#primary-gradient)" 
+          stroke-width="2.5" 
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+    
+    <!-- Inner hexagon -->
+    <path d="M100 40L150 65V115L100 140L50 115V65L100 40Z" 
+          fill="none" 
+          stroke="url(#secondary-gradient)" 
+          stroke-width="2" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" />
+    
+    <!-- Connection lines from outer to inner hexagon -->
+    <line x1="100" y1="0" x2="100" y2="40" stroke="url(#primary-gradient)" stroke-width="1.5" />
+    <line x1="186.6" y1="50" x2="150" y2="65" stroke="url(#primary-gradient)" stroke-width="1.5" />
+    <line x1="186.6" y1="150" x2="150" y2="115" stroke="url(#primary-gradient)" stroke-width="1.5" />
+    <line x1="100" y1="200" x2="100" y2="140" stroke="url(#primary-gradient)" stroke-width="1.5" />
+    <line x1="13.4" y1="150" x2="50" y2="115" stroke="url(#primary-gradient)" stroke-width="1.5" />
+    <line x1="13.4" y1="50" x2="50" y2="65" stroke="url(#primary-gradient)" stroke-width="1.5" />
+    
+    <!-- Additional mesh lines for network effect -->
+    <line x1="100" y1="40" x2="150" y2="115" stroke="url(#secondary-gradient)" stroke-width="1" stroke-opacity="0.6" />
+    <line x1="100" y1="40" x2="50" y2="115" stroke="url(#secondary-gradient)" stroke-width="1" stroke-opacity="0.6" />
+    <line x1="150" y1="65" x2="50" y2="65" stroke="url(#secondary-gradient)" stroke-width="1" stroke-opacity="0.6" />
+    <line x1="150" y1="115" x2="50" y2="115" stroke="url(#secondary-gradient)" stroke-width="1" stroke-opacity="0.6" />
+    <line x1="150" y1="65" x2="50" y2="115" stroke="url(#secondary-gradient)" stroke-width="1" stroke-opacity="0.6" />
+    <line x1="50" y1="65" x2="150" y2="115" stroke="url(#secondary-gradient)" stroke-width="1" stroke-opacity="0.6" />
+    
+    <!-- Nodes on the outer hexagon -->
+    <circle cx="100" cy="0" r="4" fill="#0EA5E9" filter="url(#glow)" />
+    <circle cx="186.6" cy="50" r="4" fill="#0EA5E9" filter="url(#glow)" />
+    <circle cx="186.6" cy="150" r="4" fill="#0EA5E9" filter="url(#glow)" />
+    <circle cx="100" cy="200" r="4" fill="#0EA5E9" filter="url(#glow)" />
+    <circle cx="13.4" cy="150" r="4" fill="#0EA5E9" filter="url(#glow)" />
+    <circle cx="13.4" cy="50" r="4" fill="#0EA5E9" filter="url(#glow)" />
+    
+    <!-- Nodes on the inner hexagon -->
+    <circle cx="100" cy="40" r="3" fill="#6366F1" filter="url(#glow)" />
+    <circle cx="150" cy="65" r="3" fill="#6366F1" filter="url(#glow)" />
+    <circle cx="150" cy="115" r="3" fill="#6366F1" filter="url(#glow)" />
+    <circle cx="100" cy="140" r="3" fill="#6366F1" filter="url(#glow)" />
+    <circle cx="50" cy="115" r="3" fill="#6366F1" filter="url(#glow)" />
+    <circle cx="50" cy="65" r="3" fill="#6366F1" filter="url(#glow)" />
+    
+    <!-- Central node -->
+    <circle cx="100" cy="90" r="15" fill="url(#accent-gradient)" filter="url(#glow)" />
+    
+    <!-- Pulse animation for central node -->
+    <circle cx="100" cy="90" r="20" fill="url(#accent-gradient)" opacity="0.3">
+      <animate attributeName="r" from="15" to="25" dur="2s" repeatCount="indefinite" />
+      <animate attributeName="opacity" from="0.3" to="0" dur="2s" repeatCount="indefinite" />
+    </circle>
+  </g>
+  
+  <!-- Logo text -->
+  <g transform="translate(125, 220)" text-anchor="middle">
+    <!-- DCENTRAL -->
+    <path d="M-61.08 0V-12.32H-56.76C-54.7067 -12.32 -53.1467 -11.9067 -52.08 -11.08C-51.0133 -10.2533 -50.48 -9.0267 -50.48 -7.4C-50.48 -5.8 -51.0133 -4.58 -52.08 -3.74C-53.1467 -2.9133 -54.7067 -2.5 -56.76 -2.5H-58.9V0H-61.08ZM-58.9 -4.38H-56.96C-55.64 -4.38 -54.68 -4.6 -54.08 -5.04C-53.4667 -5.4933 -53.16 -6.3067 -53.16 -7.48C-53.16 -8.6267 -53.4667 -9.42 -54.08 -9.86C-54.68 -10.3 -55.64 -10.52 -56.96 -10.52H-58.9V-4.38Z"
+         fill="#0F172A" />
+    <path d="M-42.2264 0.18C-43.6397 0.18 -44.8664 -0.1067 -45.9064 -0.68C-46.9464 -1.2533 -47.7464 -2.08 -48.3064 -3.16C-48.8664 -4.24 -49.1464 -5.5 -49.1464 -6.94C-49.1464 -8.3667 -48.8664 -9.62 -48.3064 -10.7C-47.7464 -11.78 -46.9464 -12.6067 -45.9064 -13.18C-44.8664 -13.7533 -43.6397 -14.04 -42.2264 -14.04C-41.1331 -14.04 -40.1464 -13.88 -39.2664 -13.56C-38.3864 -13.2533 -37.6531 -12.7867 -37.0664 -12.16L-38.3064 -10.38C-38.8264 -10.8867 -39.3997 -11.2733 -40.0264 -11.54C-40.6531 -11.8067 -41.3464 -11.94 -42.1064 -11.94C-43.0264 -11.94 -43.8331 -11.7533 -44.5264 -11.38C-45.2197 -11.02 -45.7597 -10.5 -46.1464 -9.82C-46.5331 -9.14 -46.7264 -8.3267 -46.7264 -7.38C-46.7264 -6.4067 -46.5331 -5.58 -46.1464 -4.9C-45.7597 -4.22 -45.2197 -3.7 -44.5264 -3.34C-43.8331 -2.98 -43.0264 -2.8 -42.1064 -2.8C-41.3464 -2.8 -40.6531 -2.9333 -40.0264 -3.2C-39.3997 -3.4667 -38.8264 -3.8533 -38.3064 -4.36L-37.0664 -2.58C-37.6531 -1.9533 -38.3864 -1.48 -39.2664 -1.16C-40.1464 -0.84 -41.1331 -0.68 -42.2264 -0.18Z"
+         fill="#0F172A" />
+    <path d="M-30.9128 0V-12.32H-22.6328V-10.32H-28.7328V-7.06H-23.3728V-5.06H-28.7328V-2H-22.4128V0H-30.9128Z"
+         fill="#0F172A" />
+    <path d="M-16.4192 0V-12.32H-14.2992L-8.7392 -4.62L-9.2192 -4.22V-12.32H-7.1192V0H-9.2392L-14.8192 -7.68L-14.3192 -8.08V0H-16.4192Z"
+         fill="#0F172A" />
+    <path d="M4.7844 -10.32H0.9444V-12.32H10.8244V-10.32H6.9844V0H4.7844V-10.32Z"
+         fill="#0F172A" />
+    <path d="M16.868 0V-12.32H21.188C23.2413 -12.32 24.8013 -11.9067 25.868 -11.08C26.9347 -10.2533 27.468 -9.0267 27.468 -7.4C27.468 -5.7733 26.9347 -4.5467 25.868 -3.72C24.8013 -2.8933 23.2413 -2.48 21.188 -2.48H19.048V0H16.868ZM19.048 -4.38H20.988C22.308 -4.38 23.268 -4.6 23.868 -5.04C24.4813 -5.4933 24.788 -6.3067 24.788 -7.48C24.788 -8.6267 24.4813 -9.42 23.868 -9.86C23.268 -10.3 22.308 -10.52 20.988 -10.52H19.048V-4.38ZM27.368 0L24.108 -5.12L26.448 -5.56L30.008 0H27.368Z"
+         fill="#0F172A" />
+    <path d="M35.6016 0V-12.32H37.8016V0H35.6016ZM32.3416 -5.18V-7.22H41.0616V-5.18H32.3416Z"
+         fill="#0F172A" />
+    <path d="M47.0048 0V-12.32H49.2048V-2H55.3248V0H47.0048Z"
+         fill="#0F172A" />
+    
+    <!-- Governance Platform -->
+    <text x="0" y="15" font-family="Arial, sans-serif" font-size="10" fill="#64748B" letter-spacing="0.5">
+      GOVERNANCE PLATFORM
+    </text>
+  </g>
+</svg>
