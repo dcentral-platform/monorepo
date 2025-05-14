@@ -1,0 +1,7 @@
+- body: Create skeleton
+  due: '2025-05-20'
+  id: W1-01
+  labels:
+  - setup
+  title: Init repo
+  week: 1
