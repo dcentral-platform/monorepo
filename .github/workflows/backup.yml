@@ -13,7 +13,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Get all history
       
@@ -28,7 +28,7 @@ jobs:
           git bundle create "repo_backup_${TIMESTAMP}.bundle" --all
       
       - name: Upload repository backup
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: repository-backup
           path: "*.bundle"
@@ -40,24 +40,24 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Generate SBOM for Go code
-        uses: anchore/sbom-action@v0
+        uses: anchore/sbom-action@v1
         with:
           format: cyclonedx-json
           output-file: go-sbom.json
           path: ./code/edge-gateway
       
       - name: Generate SBOM for Node.js code
-        uses: anchore/sbom-action@v0
+        uses: anchore/sbom-action@v1
         with:
           format: cyclonedx-json
           output-file: node-sbom.json
           path: ./code
       
       - name: Upload SBOM reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sbom-reports
           path: |
@@ -70,7 +70,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       # This is a placeholder for actual DB backup
       # In a real project, you would use appropriate authentication and connection strings
@@ -91,7 +91,7 @@ jobs:
           echo "-- Database backup for ${TIMESTAMP}\n-- This is just a placeholder file\n\nSELECT 'backup placeholder';" > db_backups/backup_${TIMESTAMP}.sql
       
       - name: Upload database backup
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: database-backup
           path: db_backups/
