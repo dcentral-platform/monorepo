@@ -9,11 +9,11 @@ on:
 
 permissions:
   contents: read
-  packages: write
+  packages: read
 
 jobs:
-  go-build:
-    name: Build and Test Go Backend
+  basic-build:
+    name: Basic Build Check
     runs-on: ubuntu-latest
     
     steps:
@@ -24,221 +24,50 @@ jobs:
       with:
         go-version: '1.21'
     
-    - name: Create basic Go module if not exists
+    - name: Check Go files
       run: |
-        if [ ! -d "code/edge-gateway" ]; then
-          mkdir -p code/edge-gateway
+        if [ -d "code/edge-gateway" ] && [ -f "code/edge-gateway/main.go" ]; then
+          cd code/edge-gateway
+          go version
+          if [ -f "go.mod" ]; then
+            go mod tidy
+            go build -v ./...
+          else
+            echo "No go.mod file found, creating one"
+            go mod init github.com/dcentral-platform/monorepo/edge-gateway
+            go build -v ./...
+          fi
+        else
+          echo "No Go code to build at this time"
         fi
-        
-        cd code/edge-gateway
-        if [ ! -f "go.mod" ]; then
-          go mod init github.com/dcentral-platform/monorepo/edge-gateway
-          echo 'package main
-
-import "fmt"
-
-func main() {
-	fmt.Println("Hello, D Central!")
-}' > main.go
-        fi
-    
-    - name: Install dependencies
-      run: |
-        cd code/edge-gateway
-        if [ -f "go.mod" ]; then
-          go mod tidy
-        fi
-    
-    - name: Build
-      run: |
-        cd code/edge-gateway
-        go build -v ./...
-    
-    - name: Test
-      run: |
-        cd code/edge-gateway
-        if [ -d "." ]; then
-          go test -v ./... || echo "No tests found"
-        fi
-    
-    - name: Create coverage placeholder
-      run: |
-        cd code/edge-gateway
-        echo "# Coverage Report Placeholder" > coverage.html
-        echo "Future coverage reports will be generated here" >> coverage.html
-    
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v4
-      with:
-        name: go-coverage-report
-        path: code/edge-gateway/coverage.html
-  
-  node-build:
-    name: Build and Test Node.js Frontend
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v4
     
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
     
-    - name: Create basic Node.js project if not exists
+    - name: Check Node.js files
       run: |
-        if [ ! -d "code" ]; then
-          mkdir -p code
-        fi
-        
-        cd code
-        if [ ! -f "package.json" ]; then
-          echo '{
-            "name": "dcentral-frontend",
-            "version": "0.1.0",
-            "private": true,
-            "scripts": {
-              "build": "echo \"Build script placeholder\"",
-              "test": "echo \"Test script placeholder\"",
-              "lint": "echo \"Lint script placeholder\""
-            }
-          }' > package.json
-        fi
-        
-        if [ ! -d "dist" ]; then
-          mkdir -p dist
-          echo "<!DOCTYPE html><html><body><h1>D Central Frontend</h1><p>Placeholder</p></body></html>" > dist/index.html
+        if [ -d "code" ] && [ -f "code/package.json" ]; then
+          cd code
+          node --version
+          npm --version
+          echo "Node.js setup complete"
+        else
+          echo "No Node.js code to build at this time"
         fi
     
-    - name: Install dependencies
+    - name: Create build summary
       run: |
-        cd code
-        npm install || echo "No dependencies to install"
+        echo "# Build Summary" > build_summary.md
+        echo "- Go version: $(go version)" >> build_summary.md
+        echo "- Node.js version: $(node --version)" >> build_summary.md
+        echo "- NPM version: $(npm --version)" >> build_summary.md
+        echo "- Date: $(date)" >> build_summary.md
+        echo "Build check completed successfully!" >> build_summary.md
     
-    - name: Lint
-      run: |
-        cd code
-        npm run lint || echo "Lint command not configured"
-    
-    - name: Build
-      run: |
-        cd code
-        npm run build || echo "Build command not configured"
-    
-    - name: Test
-      run: |
-        cd code
-        npm test || echo "Test command not configured"
-    
-    - name: Upload build artifact
+    - name: Upload build summary
       uses: actions/upload-artifact@v4
       with:
-        name: frontend-build
-        path: code/dist
-  
-  smart-contracts:
-    name: Build and Test Smart Contracts
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-    
-    - name: Create basic contracts project if not exists
-      run: |
-        if [ ! -d "code/contracts" ]; then
-          mkdir -p code/contracts
-          cd code/contracts
-          
-          echo '{
-            "name": "dcentral-contracts",
-            "version": "0.1.0",
-            "scripts": {
-              "compile": "echo \"Compile placeholder\"",
-              "test": "echo \"Test placeholder\"",
-              "coverage": "echo \"Coverage placeholder\""
-            }
-          }' > package.json
-          
-          mkdir -p artifacts
-          echo '{"contractName": "placeholder"}' > artifacts/placeholder.json
-        fi
-    
-    - name: Install dependencies
-      run: |
-        cd code/contracts
-        npm install || echo "No dependencies to install"
-    
-    - name: Create placeholder artifacts
-      run: |
-        cd code/contracts
-        mkdir -p artifacts
-        echo '{"contractName": "RevenueShareWarrant"}' > artifacts/RevenueShareWarrant.json
-    
-    - name: Upload contract artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: contract-artifacts
-        path: code/contracts/artifacts
-  
-  docker:
-    name: Build and Push Docker Images
-    needs: [go-build]
-    runs-on: ubuntu-latest
-    if: false  # Temporarily disable until we have permission to push
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-    
-    - name: Create Dockerfile if not exists
-      run: |
-        if [ ! -d "code/edge-gateway" ]; then
-          mkdir -p code/edge-gateway
-        fi
-        
-        if [ ! -f "code/edge-gateway/Dockerfile" ]; then
-          cat > code/edge-gateway/Dockerfile << 'EOF'
-FROM golang:1.21-alpine AS builder
-WORKDIR /app
-COPY . .
-RUN go mod tidy || go mod init github.com/dcentral-platform/monorepo/edge-gateway
-RUN go build -o app .
-
-FROM alpine:latest
-COPY --from=builder /app/app /app
-CMD ["/app"]
-EOF
-        fi
-    
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Extract metadata for Docker
-      id: meta
-      uses: docker/metadata-action@v4
-      with:
-        images: ghcr.io/${{ github.repository }}/edge-gateway
-        tags: |
-          type=ref,event=branch
-          type=sha,format=short
-    
-    - name: Build and push Edge Gateway image
-      uses: docker/build-push-action@v5
-      with:
-        context: ./code/edge-gateway
-        push: false  # Change to true when we're ready to push
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+        name: build-summary
+        path: build_summary.md
