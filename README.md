@@ -8,6 +8,7 @@ The project is now set up with:
 - GitHub Actions workflows for CI/CD, docs, security, and backups
 - Basic documentation structure with MkDocs
 - Placeholder files for all major components
+- Working CI/CD pipelines (build, security checks)
 
 ### Week 1 Progress: COMPLETE ✅
 
@@ -20,6 +21,14 @@ All Week 1 tasks have been completed:
 - ✅ Draft Privacy Notice v0.9 (design document created)
 - ✅ Create GitHub Actions SBOM workflow
 - ✅ Plan folder map (directory structure created)
+
+## CI/CD Status
+
+The repository has the following working CI/CD pipelines:
+- ✅ Basic Build and Test workflow - verifies Go and Node.js code
+- ✅ Security Check workflow - performs basic dependency scanning and secret detection
+- ✅ Documentation workflow - builds and deploys MkDocs documentation
+- ✅ Nightly Backup workflow - scheduled repository snapshots and artifact generation
 
 ## Next Steps
 
