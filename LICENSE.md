@@ -1,136 +1,52 @@
-## Design Document — `LICENSE.txt` Strategy
+# Dual License: GNU GPL v3 and Creative Commons Attribution 4.0 International
 
-*(v1.0 · 14 May 2025)*
+This project is dual-licensed under the GNU General Public License v3.0 (GPL-3.0) and the Creative Commons Attribution 4.0 International License (CC BY 4.0).
 
-> **Repository path:** `/LICENSE.txt`
-> **Design‑spec path:** `/docs/compliance/license_design.md`
+## Software Components - GNU GPL v3
 
----
+All software components, including but not limited to source code, configuration files, build scripts, and software-related documentation are licensed under the GNU General Public License v3.0.
 
-### 1 Purpose
+[Complete GPL-3.0 License Text](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-* Provide a **single, repo‑root licence file** that instantly tells lawyers and open‑source scanners **what they can do with each asset**.
-* Support two distinct audiences:
+### GPL-3.0 Summary
 
-  1. Developers who consume or fork **code**.
-  2. Partners who reproduce or translate **documentation & design assets**.
+The GPL-3.0 allows you to:
+- Use the software for any purpose
+- Change the software to suit your needs
+- Share the software with your friends and neighbors
+- Share the changes you make
 
----
+Under the condition that you:
+- Share any changes you make (if you redistribute the software)
+- License any derivative works under GPL-3.0
+- Keep all copyright notices intact
+- Provide the source code when you distribute the software
+- Do not impose additional restrictions on the rights granted by the license
 
-### 2 Chosen Model — **Dual Licence**
+## Documentation and Design Assets - Creative Commons Attribution 4.0 International
 
-| Asset Class                                    | Licence                     | Why                                                                                       |
-| ---------------------------------------------- | --------------------------- | ----------------------------------------------------------------------------------------- |
-| **Source code, scripts, smart‑contracts**      | **GPL v3**                  | Copyleft ensures improvements flow back; widely understood in security & embedded worlds. |
-| **Documentation, decks, media, design tokens** | **Creative Commons BY 4.0** | Allows integrators and press to remix/translate while requiring attribution.              |
+All documentation, design assets, multimedia content, and non-software components are licensed under the Creative Commons Attribution 4.0 International License.
 
-> Anything not fitting those classes can be whitelisted via `NOTICE` section (see §5).
+[Complete CC BY 4.0 License Text](https://creativecommons.org/licenses/by/4.0/legalcode)
 
----
+### CC BY 4.0 Summary
 
-### 3 `LICENSE.txt` File Layout
+The CC BY 4.0 allows you to:
+- Share — copy and redistribute the material in any medium or format
+- Adapt — remix, transform, and build upon the material for any purpose, even commercially
 
-```text
-========================
-D CENTRAL MONOREPO
-MASTER LICENCE FILE
-========================
+Under the condition that you:
+- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+- No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
 
-1. OVERVIEW
-   • Code  – GPL‑3.0‑or‑later
-   • Docs  – CC‑BY‑4.0
-   • Third‑party components listed in /legal/open‑source‑license‑matrix.xlsx
+## Note on Dual Licensing
 
-2. GPL‑3.0‑OR‑LATER TERMS …  (full text ~5 KB)
+- If you are using, modifying, or distributing software components of this project, you must comply with the GPL-3.0.
+- If you are using, modifying, or distributing documentation or design assets, you must comply with CC BY 4.0.
+- Components that combine software and documentation aspects are subject to both licenses in their respective parts.
 
-3. CC‑BY‑4.0 LEGAL CODE …    (full text ~7 KB)
+## Copyright
 
-4. NOTICE (Whitelist / Exceptions)
-   * The file /design/logo/static/dcentral-icon.svg is © 2025 D Central Inc.
-     and licensed under CC‑BY‑4.0 with trademark restriction.
-```
+Copyright (c) 2025 D Central Platform.
 
-**Why embed both full texts?**
-Some jurisdictions still require licence text to be “distributed with the work,” and many scanners look for magic strings inside `LICENSE.txt`.
-
----
-
-### 4 Header Snippets for Source Files
-
-```go
-// SPDX-License-Identifier: GPL-3.0-or-later
-// Copyright 2025 D Central Inc.
-```
-
-```md
-<!---
-Copyright 2025 D Central Inc.
-SPDX‑License‑Identifier: CC‑BY‑4.0
--->
-```
-
-*Added automatically by pre‑commit hook using `license‑headers`.*
-
----
-
-### 5 Exceptions / NOTICE Section
-
-* Proprietary fonts, trademarks, or vendor SDKs that cannot inherit GPL/CC must be declared here.
-* Example entry:
-
-```
-5. FONTS
-   The Inter typeface (font files under /design/fonts) is licensed under the
-   SIL OFL 1.1 and NOT under GPL or CC‑BY.  See /design/fonts/OFL.txt.
-```
-
----
-
-### 6 Compliance Workflow
-
-| Step                              | Tool / File                                                                                  |
-| --------------------------------- | -------------------------------------------------------------------------------------------- |
-| Developer creates new dep         | Add to `go.mod` / `package.json`                                                             |
-| CI **Trivy SBOM** step            | Generates SPDX JSON                                                                          |
-| `scripts/ci/sbom_diff_checker.sh` | Fails if new licence not GPL‑compatible **and** missing in `open‑source‑license‑matrix.xlsx` |
-| Weekly cron                       | Exports combined SPDX → `/data-room/sbom_full.spdx`                                          |
-
----
-
-### 7 Contributor Guidance
-
-* PR template reminds: “All new code will be GPL‑3.0‑or‑later.”
-* Docs contributors must add attribution line at end of file.
-* External logos/images must list **source URL + licence** in front‑matter.
-
----
-
-### 8 Edge‑Cases & Future Proofing
-
-| Scenario                                  | Action                                                                   |
-| ----------------------------------------- | ------------------------------------------------------------------------ |
-| Commercial OEM demands permissive licence | Mirror code in `/enterprise/` module under Apache‑2.0 and keep core GPL. |
-| Docs translated by partner                | Allowed under CC‑BY; must credit “© 2025 D Central Inc.”                 |
-| Integrated MIT‑licensed library           | GPL‑3.0 is compatible; note in matrix.                                   |
-| Trademark usage                           | Governed by separate **Brand Guidelines**; reference link in NOTICE.     |
-
----
-
-### 9 Implementation Checklist
-
-| File / Task                                          | Status        |
-| ---------------------------------------------------- | ------------- |
-| `/LICENSE.txt` with dual text                        | ☐             |
-| `open‑source‑license‑matrix.xlsx` initial population | ☐             |
-| Pre‑commit header hook (`reuse lint`)                | ☐             |
-| CI SBOM diff job                                     | ☐             |
-| Docs page `/docs/compliance/license_design.md`       | ✅ (this file) |
-
----
-
-### 10 Versioning
-
-* **v1.0** — dual GPL 3 / CC‑BY 4.0, initial NOTICE section
-* Changes to licence terms require **BrandDAO Snapshot vote** + TAG `license‑change`.
-
-Place the completed `LICENSE.txt` in repo‑root, wire up the CI header checks, and your project will pass most corporate open‑source compliance reviews on day one.
+For questions about licensing or permissions beyond the scope of these licenses, please contact legal@dcentral.ai.
