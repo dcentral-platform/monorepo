@@ -189,7 +189,7 @@ func main() {
     name: Build and Push Docker Images
     needs: [go-build]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: false  # Temporarily disable until we have permission to push
     
     steps:
     - uses: actions/checkout@v4
@@ -237,7 +237,7 @@ EOF
       uses: docker/build-push-action@v5
       with:
         context: ./code/edge-gateway
-        push: true
+        push: false  # Change to true when we're ready to push
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
