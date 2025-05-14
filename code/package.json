@@ -1,0 +1,10 @@
+{
+  "name": "dcentral-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "echo \"Build script placeholder\"",
+    "test": "echo \"Test script placeholder\"",
+    "lint": "echo \"Lint script placeholder\""
+  }
+}

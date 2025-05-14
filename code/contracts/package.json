@@ -1,0 +1,9 @@
+{
+  "name": "dcentral-contracts",
+  "version": "0.1.0",
+  "scripts": {
+    "compile": "echo \"Compile placeholder\"",
+    "test": "echo \"Test placeholder\"",
+    "coverage": "echo \"Coverage placeholder\""
+  }
+}

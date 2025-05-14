@@ -1,0 +1,50 @@
+{
+  "contractName": "RevenueShareWarrant",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "contributor",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "contributionValue",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint16",
+          "name": "percent",
+          "type": "uint16"
+        }
+      ],
+      "name": "mint",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "distribute",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b50610415806100206000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c8063",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100365760003560e01c8063",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/RevenueShareWarrant.sol\":\"RevenueShareWarrant\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"src/RevenueShareWarrant.sol\":{\"keccak256\":\"0x01\",\"license\":\"GPL-3.0-or-later\",\"urls\":[\"bzz-raw://01\",\"dweb:/ipfs/01\"]}},\"version\":1}"
+}
