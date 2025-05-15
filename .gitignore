@@ -1,3 +1,15 @@
 node_modules/
 .env
 __pycache__/
+
+# Ignore logs and reports directories
+logs/
+reports/
+
+# Ignore macOS system files
+.DS_Store
+**/.DS_Store
+
+# Ignore generated HTML reports
+verification_report.html
+design/wcag-report.md

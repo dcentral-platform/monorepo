@@ -1,0 +1,58 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-json
+      - id: check-merge-conflict
+
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.12.1
+    hooks:
+      - id: markdownlint-cli2
+        args: ["--config", "{\"MD013\": false, \"MD033\": false}"]
+
+  # Add SVG linting
+  - repo: local
+    hooks:
+      - id: svgo
+        name: SVGO
+        entry: npx svgo --pretty --dry-run
+        language: node
+        files: \.svg$
+        pass_filenames: true
+
+  # Add Go linting (when available)
+  - repo: local
+    hooks:
+      - id: go-vet
+        name: Go Vet
+        entry: bash -c 'cd code/edge-gateway && go vet ./...'
+        language: system
+        types: [go]
+        pass_filenames: false
+
+  # Helm chart linting
+  - repo: local
+    hooks:
+      - id: helm-lint
+        name: Helm Lint
+        entry: bash -c 'helm lint code/helm/edge-gateway-chart'
+        language: system
+        files: ^code/helm/edge-gateway-chart/
+        pass_filenames: false
+
+  # License header check
+  - repo: https://github.com/fsfe/reuse-tool
+    rev: v2.1.0
+    hooks:
+      - id: reuse
+
+  # Workflow validation
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.6.26
+    hooks:
+      - id: actionlint

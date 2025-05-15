@@ -1,0 +1,349 @@
+name: D Central Test Suite Weeks 1-3
+
+on:
+  push:
+    branches: [ main, develop, feature/*, release/* ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  #--------------------------------------------------
+  # Week 1 Tests
+  #--------------------------------------------------
+  W1-REPO-01:
+    name: W1-REPO-01 Repository Structure Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Run directory structure check
+        run: |
+          cd scripts/ci
+          python3 tree_assert.py
+
+  W1-LEGAL-01:
+    name: W1-LEGAL-01 Required Legal Docs Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check legal docs existence
+        run: |
+          required_files=(
+            "legal/mutual-nda_v1.0.md"
+            "legal/privacy-notice_v1.0.md"
+            "legal/revenue-share-warrant_v1.md"
+            "LICENSE.md"
+            "CODE_OF_CONDUCT.md"
+          )
+          
+          missing=0
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Missing required file: $file"
+              missing=1
+            else
+              echo "✅ Found required file: $file"
+            fi
+          done
+          
+          if [ $missing -eq 1 ]; then
+            exit 1
+          fi
+
+  W1-DOCS-01:
+    name: W1-DOCS-01 Markdown Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: markdownlint-cli
+        uses: nosborn/github-action-markdown-cli@v3.3.0
+        with:
+          files: .
+          config_file: .markdownlint.json || .markdownlint.yaml || .markdownlint.yml
+
+  W1-BRAND-01:
+    name: W1-BRAND-01 Brand Assets Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check brand assets
+        run: |
+          svg_files=$(find design/logo/static -name "*.svg" | wc -l)
+          
+          if [ "$svg_files" -lt 2 ]; then
+            echo "❌ Not enough SVG logo files found (minimum 2 required)"
+            exit 1
+          else
+            echo "✅ Found $svg_files SVG logo files"
+          fi
+
+  W1-BRAND-02:
+    name: W1-BRAND-02 SVG Optimization Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install svgo
+        run: npm install -g svgo
+      - name: Check SVG optimization
+        run: |
+          for svg in $(find design/logo/static -name "*.svg"); do
+            before_size=$(wc -c < "$svg")
+            svgo --disable=removeViewBox "$svg" -o "$svg.optimized"
+            after_size=$(wc -c < "$svg.optimized")
+            rm "$svg.optimized"
+            
+            savings=$(( 100 - (after_size * 100 / before_size) ))
+            echo "$svg: Original: $before_size bytes, Potential: $after_size bytes, Savings: $savings%"
+            
+            if [ "$savings" -gt 10 ]; then
+              echo "⚠️ SVG file $svg could be optimized further (potential $savings% savings)"
+            else
+              echo "✅ SVG file $svg is well optimized"
+            fi
+          done
+
+  W1-TOKEN-01:
+    name: W1-TOKEN-01 Design Token File Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check design tokens
+        run: |
+          token_file="design/palette-tokens/design-tokens.json"
+          
+          if [ ! -f "$token_file" ]; then
+            echo "❌ Missing design tokens file: $token_file"
+            exit 1
+          fi
+          
+          # Check if the JSON is valid
+          if ! jq empty "$token_file" 2>/dev/null; then
+            echo "❌ Invalid JSON in design tokens file"
+            exit 1
+          fi
+          
+          # Check required token categories
+          required_categories=("colors" "spacing" "typography")
+          missing=0
+          
+          for category in "${required_categories[@]}"; do
+            if ! jq -e ".$category" "$token_file" >/dev/null 2>&1; then
+              echo "❌ Missing required token category: $category"
+              missing=1
+            else
+              echo "✅ Found required token category: $category"
+            fi
+          done
+          
+          if [ $missing -eq 1 ]; then
+            exit 1
+          fi
+
+  #--------------------------------------------------
+  # Week 2 Tests
+  #--------------------------------------------------
+  W2-WCAG-01:
+    name: W2-WCAG-01 Color Contrast Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm install wcag-contrast
+      - name: Run contrast check
+        run: node scripts/ci/contrast.js
+
+  W2-DOCKER-01:
+    name: W2-DOCKER-01 Docker Image Build Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Edge Gateway Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./code/edge-gateway
+          push: false
+          tags: dcentral/edge-gateway:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  W2-SBOM-01:
+    name: W2-SBOM-01 SBOM Generation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          format: 'cyclonedx'
+          output: 'sbom.cdx.json'
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v3
+        with:
+          name: sbom
+          path: sbom.cdx.json
+
+  W2-SBOM-02:
+    name: W2-SBOM-02 License Compatibility Check
+    runs-on: ubuntu-latest
+    needs: W2-SBOM-01
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download SBOM
+        uses: actions/download-artifact@v3
+        with:
+          name: sbom
+      - name: Check SBOM for GPL compatibility
+        run: |
+          bash scripts/ci/sbom_diff_checker_enhanced.sh sbom.cdx.json scripts/ci/gpl_compatible_licenses.txt
+
+  W2-GO-01:
+    name: W2-GO-01 Go Code Quality Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+      - name: Verify dependencies
+        run: |
+          cd code/edge-gateway
+          go mod verify
+      - name: Build
+        run: |
+          cd code/edge-gateway
+          go build -v ./...
+      - name: Run tests with race detector
+        run: |
+          cd code/edge-gateway
+          go test -race -coverprofile=coverage.txt -covermode=atomic ./...
+      - name: Check coverage
+        run: |
+          cd code/edge-gateway
+          go tool cover -func=coverage.txt | grep total | awk '{print $3}' | { read cov; if (( $(echo "$cov < 70.0" | bc -l) )); then echo "Coverage below 70%: $cov"; exit 1; fi }
+
+  W2-HELM-01:
+    name: W2-HELM-01 Helm Chart Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'v3.12.0'
+      - name: Lint Helm chart
+        run: |
+          helm lint code/helm/edge-gateway-chart
+      - name: Template Helm chart and validate
+        run: |
+          helm template code/helm/edge-gateway-chart > templated.yaml
+          if ! kubectl create --dry-run=client -f templated.yaml > /dev/null; then
+            echo "❌ Helm chart templates contain invalid Kubernetes resources"
+            exit 1
+          else
+            echo "✅ Helm chart templates are valid"
+          fi
+
+  #--------------------------------------------------
+  # Week 3 Tests
+  #--------------------------------------------------
+  W3-K8S-01:
+    name: W3-K8S-01 Kubernetes Manifest Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Kubernetes manifests
+        uses: stefanprodan/kube-tools@v1
+        with:
+          kubectl: 1.27.3
+          command: |
+            for manifest in $(find code/helm/edge-gateway-chart/templates -name "*.yaml"); do
+              echo "Validating $manifest"
+              if ! kubectl create --dry-run=client -f $manifest > /dev/null 2>&1; then
+                # Some templates might not be valid until rendered
+                echo "⚠️ $manifest not directly valid, but may be valid after rendering"
+              else
+                echo "✅ $manifest is valid"
+              fi
+            done
+
+  W3-SEC-01:
+    name: W3-SEC-01 Container Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: |
+          docker build -t dcentral/edge-gateway:test code/edge-gateway
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'dcentral/edge-gateway:test'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+  W3-PERF-01:
+    name: W3-PERF-01 MQTT Performance Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run k6 MQTT test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: code/tests/perf/mqtt_loadtest.js
+          flags: --vus 10 --duration 30s
+
+  W3-PERF-02:
+    name: W3-PERF-02 REST API Performance Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run k6 REST API test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: code/tests/perf/rest_loadtest.js
+          flags: --vus 10 --duration 30s
+
+  W3-GH-01:
+    name: W3-GH-01 GitHub Workflows Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check GitHub Workflows
+        run: |
+          workflow_files=$(find .github/workflows -name "*.yml" -o -name "*.yaml" | wc -l)
+          
+          if [ "$workflow_files" -eq 0 ]; then
+            echo "❌ No GitHub workflow files found"
+            exit 1
+          else
+            echo "✅ Found $workflow_files GitHub workflow files"
+          fi
+          
+          # Validate workflow files
+          for file in $(find .github/workflows -name "*.yml" -o -name "*.yaml"); do
+            if ! yq eval $file > /dev/null 2>&1; then
+              echo "❌ Invalid YAML in workflow file: $file"
+              exit 1
+            else
+              echo "✅ Valid YAML in workflow file: $file"
+            fi
+          done
